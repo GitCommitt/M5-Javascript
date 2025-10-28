@@ -46,11 +46,15 @@ export function makeAnimeCard(data){
     studiosEl.innerText = "Studio: " + data.studios[0].name;
     containerEl.appendChild(studiosEl);
 
-    let explicit_genresEl = document.createElement("p");
-    explicit_genresEl.className = "anime__explicit_genres";
-    explicit_genresEl.innerText = "Explicit Genres: " + data.explicit_genres;
-    containerEl.appendChild(explicit_genresEl);
-
+    const fullUrl = `https://api.jikan.moe/v4/anime/${data.mal_id}/full`;
+    fetch(fullUrl)
+    .then(response=>response.json())
+    .then(data=>{
+        let relationsEl = document.createElement("p");
+        relationsEl.className = "anime__relations";
+        relationsEl.innerText = "Relations: " + data.data.relations[0].entry[0].type;
+        containerEl.appendChild(relationsEl);
+    });
 
     cardEl.appendChild(containerEl);
 
